@@ -3,6 +3,19 @@
     --secondary-color: #333;
     --accent-color: #ff9800;
     --background-color: #f0f0f0;
+    --card-background: #fff;
+    --text-color: #333;
+    --pattern-opacity: 0.05;
+}
+
+body.dark-mode {
+    --primary-color: #1a1a1a;
+    --secondary-color: #e0e0e0;
+    --accent-color: #ff9800;
+    --background-color: #121212;
+    --card-background: #1e1e1e;
+    --text-color: #e0e0e0;
+    --pattern-opacity: 0.1;
 }
 
 body {
@@ -13,24 +26,27 @@ body {
     height: 100vh;
     margin: 0;
     background-color: var(--background-color);
-    background-image: linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%),
-                      linear-gradient(-45deg, rgba(0,0,0,0.05) 25%, transparent 25%),
-                      linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.05) 75%),
-                      linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.05) 75%);
+    background-image: linear-gradient(45deg, rgba(0,0,0,var(--pattern-opacity)) 25%, transparent 25%),
+                      linear-gradient(-45deg, rgba(0,0,0,var(--pattern-opacity)) 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, rgba(0,0,0,var(--pattern-opacity)) 75%),
+                      linear-gradient(-45deg, transparent 75%, rgba(0,0,0,var(--pattern-opacity)) 75%);
     background-size: 20px 20px;
+    transition: background-color 0.3s ease;
 }
 
 #app {
     text-align: center;
-    background: #fff;
+    background: var(--card-background);
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 }
 
 h1 {
-    color: var(--secondary-color);
+    color: var(--text-color);
     margin-bottom: 30px;
+    transition: color 0.3s ease;
 }
 
 #numbers-container {
@@ -68,4 +84,46 @@ lotto-ball {
     font-weight: bold;
     color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--card-background);
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#dark-mode-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+#bonus-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.bonus-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+#bonus-container {
+    display: flex;
+    gap: 15px;
 }
