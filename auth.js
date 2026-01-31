@@ -1,6 +1,6 @@
 // Supabase Authentication Module
 
-let supabaseClientClient;
+let supabaseClient;
 
 // Initialize Supabase
 function initSupabase() {
