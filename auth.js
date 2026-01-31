@@ -4,7 +4,7 @@ let supabaseClientClient;
 
 // Initialize Supabase
 function initSupabase() {
-    const { createClient } = window.supabaseClient;
+    const { createClient } = window.supabase;
     return createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
 }
 
