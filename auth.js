@@ -1,10 +1,10 @@
 // Supabase Authentication Module
 
-let supabase;
+let supabaseClientClient;
 
 // Initialize Supabase
 function initSupabase() {
-    const { createClient } = supabase;
+    const { createClient } = window.supabaseClient;
     return createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
 }
 
@@ -57,7 +57,7 @@ function updateAuthUI(user) {
 // Sign up function
 async function signUp(email, password) {
     try {
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
             email,
             password
         });
@@ -76,7 +76,7 @@ async function signUp(email, password) {
 // Sign in function
 async function signIn(email, password) {
     try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
             email,
             password
         });
@@ -95,7 +95,7 @@ async function signIn(email, password) {
 // Sign out function
 async function signOut() {
     try {
-        const { error } = await supabase.auth.signOut();
+        const { error } = await supabaseClient.auth.signOut();
         if (error) throw error;
     } catch (error) {
         console.error('Error signing out:', error.message);
@@ -104,14 +104,14 @@ async function signOut() {
 
 // Initialize auth
 async function initAuth() {
-    supabase = initSupabase();
+    supabaseClient = initSupabase();
 
     // Check current session
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabaseClient.auth.getSession();
     updateAuthUI(session?.user);
 
     // Listen for auth changes
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabaseClient.auth.onAuthStateChange((event, session) => {
         updateAuthUI(session?.user);
     });
 
