@@ -1,23 +1,22 @@
 // Supabase Authentication Module
 
-let supabaseClient;
+let client;
 
-// Initialize Supabase
+// Initialize Supabase client
 function initSupabase() {
     const { createClient } = window.supabase;
-    return createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+    client = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+    return client;
 }
 
 // Show auth modal
 function showAuthModal() {
-    const modal = document.getElementById('auth-modal');
-    modal.classList.add('show');
+    document.getElementById('auth-modal').classList.add('show');
 }
 
 // Hide auth modal
 function hideAuthModal() {
-    const modal = document.getElementById('auth-modal');
-    modal.classList.remove('show');
+    document.getElementById('auth-modal').classList.remove('show');
     clearAuthMessage();
 }
 
@@ -54,29 +53,27 @@ function updateAuthUI(user) {
     }
 }
 
-// Sign up function
+// Sign up
 async function signUp(email, password) {
     try {
-        const { data, error } = await supabaseClient.auth.signUp({
+        const { data, error } = await client.auth.signUp({
             email,
             password
         });
 
         if (error) throw error;
 
-        showAuthMessage('Account created! Please check your email to verify your account.');
-        setTimeout(() => {
-            hideAuthModal();
-        }, 2000);
+        showAuthMessage('Account created! Please check your email to verify.');
+        setTimeout(hideAuthModal, 2000);
     } catch (error) {
         showAuthMessage(error.message, true);
     }
 }
 
-// Sign in function
+// Sign in
 async function signIn(email, password) {
     try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
             email,
             password
         });
@@ -84,34 +81,33 @@ async function signIn(email, password) {
         if (error) throw error;
 
         showAuthMessage('Sign in successful!');
-        setTimeout(() => {
-            hideAuthModal();
-        }, 1000);
+        setTimeout(hideAuthModal, 1000);
     } catch (error) {
         showAuthMessage(error.message, true);
     }
 }
 
-// Sign out function
+// Sign out
 async function signOut() {
     try {
-        const { error } = await supabaseClient.auth.signOut();
+        const { error } = await client.auth.signOut();
         if (error) throw error;
     } catch (error) {
         console.error('Error signing out:', error.message);
     }
 }
 
-// Initialize auth
+// Initialize authentication
 async function initAuth() {
-    supabaseClient = initSupabase();
+    // Initialize Supabase client
+    initSupabase();
 
     // Check current session
-    const { data: { session } } = await supabaseClient.auth.getSession();
+    const { data: { session } } = await client.auth.getSession();
     updateAuthUI(session?.user);
 
     // Listen for auth changes
-    supabaseClient.auth.onAuthStateChange((event, session) => {
+    client.auth.onAuthStateChange((event, session) => {
         updateAuthUI(session?.user);
     });
 
@@ -125,13 +121,13 @@ async function initAuth() {
         }
     });
 
-    // Show modal links
+    // Show modal link
     document.getElementById('signin-link').addEventListener('click', (e) => {
         e.preventDefault();
         showAuthModal();
     });
 
-    // Toggle between sign in and sign up forms
+    // Toggle between sign in and sign up
     document.getElementById('show-signup').addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('signin-form').style.display = 'none';
@@ -148,7 +144,7 @@ async function initAuth() {
         clearAuthMessage();
     });
 
-    // Sign in form submit
+    // Sign in form
     document.getElementById('signin-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('signin-email').value;
@@ -156,7 +152,7 @@ async function initAuth() {
         await signIn(email, password);
     });
 
-    // Sign up form submit
+    // Sign up form
     document.getElementById('signup-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('signup-email').value;
@@ -172,7 +168,5 @@ async function initAuth() {
     });
 
     // Sign out button
-    document.getElementById('signout-btn').addEventListener('click', async () => {
-        await signOut();
-    });
+    document.getElementById('signout-btn').addEventListener('click', signOut);
 }
