@@ -8,15 +8,62 @@
 </head>
 <body>
     <button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
-    <div id="app">
-        <h1>Lotto Number Generator</h1>
-        <div id="numbers-container"></div>
-        <div id="bonus-section">
-            <span class="bonus-label">Bonus</span>
-            <div id="bonus-container"></div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="auth-title">Sign In</h2>
+
+            <div id="auth-forms">
+                <!-- Sign In Form -->
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                    <p class="auth-switch">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signup-form" style="display: none;">
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password (min 6 characters)" required minlength="6">
+                    <input type="password" id="signup-confirm" placeholder="Confirm Password" required minlength="6">
+                    <button type="submit">Sign Up</button>
+                    <p class="auth-switch">Already have an account? <a href="#" id="show-signin">Sign In</a></p>
+                </form>
+            </div>
+
+            <div id="auth-message"></div>
         </div>
-        <button id="generate-btn">Generate Numbers</button>
     </div>
+
+    <!-- Main App -->
+    <div id="app">
+        <div id="user-info" style="display: none;">
+            <span id="user-email"></span>
+            <button id="signout-btn">Sign Out</button>
+        </div>
+
+        <h1>Lotto Number Generator</h1>
+
+        <div id="auth-prompt">
+            <p>Please <a href="#" id="signin-link">sign in</a> to generate lotto numbers</p>
+        </div>
+
+        <div id="lotto-content" style="display: none;">
+            <div id="numbers-container"></div>
+            <div id="bonus-section">
+                <span class="bonus-label">Bonus</span>
+                <div id="bonus-container"></div>
+            </div>
+            <button id="generate-btn">Generate Numbers</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
